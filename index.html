@@ -3,27 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Список жанров фильмов</title>
+  <title>Выбор жанров фильма</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
-    h1 { text-align: center; }
-    ul { list-style: none; padding: 0; }
-    li { background: #f0f0f0; margin: 8px 0; padding: 10px; border-radius: 4px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h1>Жанры фильмов</h1>
-  <ul>
-    <li>Боевик</li>
-    <li>Комедия</li>
-    <li>Драма</li>
-    <li>Фантастика</li>
-    <li>Триллер</li>
-    <li>Ужасы</li>
-    <li>Мелодрама</li>
-    <li>Приключения</li>
-    <li>Анимация</li>
-    <li>Документальный</li>
-  </ul>
+
+  <h2>Выберите жанры фильма</h2>
+  <form id="genreForm">
+    <label><input type="checkbox" name="genres" value="Боевик"> Боевик</label>
+    <label><input type="checkbox" name="genres" value="Комедия"> Комедия</label>
+    <label><input type="checkbox" name="genres" value="Драма"> Драма</label>
+    <label><input type="checkbox" name="genres" value="Фантастика"> Фантастика</label>
+    <label><input type="checkbox" name="genres" value="Триллер"> Триллер</label>
+    <label><input type="checkbox" name="genres" value="Ужасы"> Ужасы</label>
+    <label><input type="checkbox" name="genres" value="Мелодрама"> Мелодрама</label>
+    <label><input type="checkbox" name="genres" value="Приключения"> Приключения</label>
+    <label><input type="checkbox" name="genres" value="Анимация"> Анимация</label>
+    <label><input type="checkbox" name="genres" value="Документальный"> Документальный</label>
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    // Инициализация объекта Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+
+    document.getElementById('genreForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Получаем выбранные жанры
+      const selectedGenres = Array.from(document.querySelectorAll('input[name="genres"]:checked'))
+                                  .map(item => item.value);
+
+      if (selectedGenres.length === 0) {
+        alert("Пожалуйста, выберите хотя бы один жанр.");
+        return;
+      }
+
+      // Формируем объект с данными для отправки
+      const payload = { genres: selectedGenres };
+
+      // Отправляем данные боту
+      tg.sendData(JSON.stringify(payload));
+
+      // Опционально закрываем мини-приложение после отправки
+      // tg.close();
+    });
+  </script>
 </body>
 </html>
